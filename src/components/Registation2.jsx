@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function RegistrationForm() {
   const [form, setForm] = useState({
@@ -13,6 +14,7 @@ export default function RegistrationForm() {
     password: "",
     confirmPassword: "",
   });
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -42,6 +44,7 @@ export default function RegistrationForm() {
       );
 
       alert(data.message || "Registration successful!");
+      navigate("/register-list");
 
       // Reset form
       setForm({
@@ -188,7 +191,9 @@ export default function RegistrationForm() {
         >
           Register
         </button>
+
       </form>
     </div>
   );
 }
+

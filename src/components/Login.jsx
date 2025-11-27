@@ -1,8 +1,9 @@
 import { useState } from "react";
+import axios from "axios";
 
 export default function Login() {
   const [form, setForm] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -10,10 +11,29 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Login successful!");
-    console.log("User Login:", form);
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3000/api/users/login",
+        {
+          email: form.email,
+          password: form.password,
+        }
+      );
+
+      alert("Login Successful!");
+
+      // Save token in localStorage
+      localStorage.setItem("token", data.data.token);
+
+      console.log("TOKEN:", data.data.token);
+
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Login failed");
+    }
   };
 
   return (
@@ -24,14 +44,14 @@ export default function Login() {
       >
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
 
-        {/* Username */}
-        <label className="block font-medium mb-1">Username</label>
+        {/* Email */}
+        <label className="block font-medium mb-1">Email</label>
         <input
-          type="text"
-          name="username"
+          type="email"
+          name="email"
           onChange={handleChange}
           className="w-full border rounded-md p-2 mb-4"
-          placeholder="Enter username"
+          placeholder="Enter email"
           required
         />
 
