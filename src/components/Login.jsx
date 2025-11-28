@@ -1,11 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate(); // <-- ADD THIS
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -29,6 +32,8 @@ export default function Login() {
       localStorage.setItem("token", data.data.token);
 
       console.log("TOKEN:", data.data.token);
+      navigate("/login-list");
+
 
     } catch (err) {
       console.error(err);
